@@ -37,11 +37,57 @@ the project's linting rules.
 ## Building and Testing
 
 To run and test the bot locally, you will need
-to set up a bot testing server in Discord. Only you
-and the bot need to be in this server.
+to set up a a test bot and a bot testing server in Discord. Only you
+and the test bot need to be in this server.
 
-To Do: Add bot setup, config.json creation,
-and all other setup details.
+Creating your test bot is a quick process, and just requires
+changing some settings in Discord. [Follow the guide linked here to
+create your bot](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot). Using its token will be discussed shortly.
+
+Once your bot is created, create a server for bot testing
+under your Discord account. Then, [follow this guide to add your bot
+to the testing server](https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links).
+
+Good work! Now your test bot application is created and waiting
+in your server. The last thing you need to do for setup
+is create a `config.json` file. 
+
+This file is loaded by the application
+at runtime and stores confidential tokens and IDs specific to your bot.
+**NEVER COMMIT YOUR config.json!**
+If you do, promptly go to Discord developer portal and request new tokens.
+
+To create the `config.json`, first take a look at `config.json.example`.
+This file provides the basic schema for your `config.json`. To create
+your `config.json`, copy the contents of `config.json.example` into
+yours but substitute the following values for each of the keys
+in the JSON object as follows:
+
++ `clientId`: Substitute in the client id provided for your bot application found on 
+the [Discord Developer Portal](https://discord.com/developers/applications).
+You can find it under the OAuth2 section.
++ `guildId`: Substituted in the guild id for your bot testing server. You can find it
+in Discord by right-clicking your server in Discord and then selecting the
+"Copy ID" option at the bottom. You will have to enable Developer Mode to 
+see this option.
++ `token`: Substitute in the token for your bot application found on the 
+[Discord Developer Portal](https://discord.com/developers/applications).
+
+Once your config.json is setup, it's time to run the application!
+
+First, run the following to deploy the commands to the bot:
+
+```bash
+node deploy-commands.js
+```
+
+Next, launch the bot!
+
+```bash
+node index.js
+```
+
+If you see a "Ready! Logged in as. . ." message, you've succeeded!
 
 ## Architecture
 
