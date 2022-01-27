@@ -22,13 +22,25 @@ After installing `node` and `npm`, run the following command:
 npm install
 ```
 
+### Linting
+
+Running this command will install the node package dependencies.
+One of these is ESLint, a linter for Javascript.
+If desired, you can install an ESLint extension for your 
+development environment to provide code highlighting based on 
+the project's linting rules.
+
++ [Install ESLint Support with VS Code](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
++ [Install ESLint Support with Atom](https://atom.io/packages/linter-eslint)
++ [Install ESLint Support with Sublime Text](https://packagecontrol.io/packages/ESLint)
+
 ## Building and Testing
 
 To run and test the bot locally, you will need
 to set up a bot testing server in Discord. Only you
 and the bot need to be in this server.
 
-To Do: Add linting install, bot setup, config.json creation,
+To Do: Add bot setup, config.json creation,
 and all other setup details.
 
 ## Architecture
