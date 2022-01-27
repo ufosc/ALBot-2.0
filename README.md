@@ -6,6 +6,31 @@ to ALBot. ALBot 2.0 uses Discord.js to interface with
 the Discord API, supplanting ALBot's dependency on the
 deprecated Discord.py library.
 
+## Dependencies
+
+The only non-npm managed dependencies are is Node.js.
+[Install Node.js here.](https://nodejs.org/en/)
+This will also install `npm`.
+The necessary versions for `node` and `npm` are:
+
++ `node`: v16.13.2
++ `npm`: 8.1.2
+
+After installing `node` and `npm`, run the following command:
+
+```bash
+npm install
+```
+
+## Building and Testing
+
+To run and test the bot locally, you will need
+to set up a bot testing server in Discord. Only you
+and the bot need to be in this server.
+
+To Do: Add linting install, bot setup, config.json creation,
+and all other setup details.
+
 ## Architecture
 
 ALBot 2.0's functionality is distributed across several files.
