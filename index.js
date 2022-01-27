@@ -14,32 +14,17 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-// When the client is ready, run this code (only once)
-client.once('ready', () => {
-	console.log('Ready!');
-});
-
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-
-	const command = client.commands.get(interaction.commandName);
-
-	if (!command) {
-		// command not found
-		return;
+// Import events into client
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
 	}
-
-	try {
-		await command.execute(interaction);
+	else {
+		client.on(event.name, (...args) => event.execute(...args));
 	}
-	catch (error) {
-		console.error(error);
-		await interaction.reply({
-			content: 'There was an error while executing this command!',
-			ephemeral: true,
-		});
-	}
-});
+}
 
 // Login to Discord with your client's token
 client.login(token);
