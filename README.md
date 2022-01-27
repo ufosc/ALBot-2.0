@@ -51,6 +51,8 @@ create your bot](https://discordjs.guide/preparations/setting-up-a-bot-applicati
 Once your bot is created, create a server for bot testing
 under your Discord account. Then, [follow this guide to add your bot
 to the testing server](https://discordjs.guide/preparations/adding-your-bot-to-servers.html#bot-invite-links).
+You will need to give the bot the following permissions:
+`bot` and `applications.commands`.
 
 Good work! Now your test bot application is created and waiting
 in your server. The last thing you need to do for setup
