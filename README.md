@@ -6,6 +6,10 @@ to ALBot. ALBot 2.0 uses Discord.js to interface with
 the Discord API, supplanting ALBot's dependency on the
 deprecated Discord.py library.
 
+To get started working on the bot, first clone the repository!
+Then proceed to the `Dependencies` and `Building and Testing`
+sections of this README.
+
 ## Dependencies
 
 The only non-npm managed dependencies are is Node.js.
