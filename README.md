@@ -116,7 +116,7 @@ by the `interactionCreate` event (see `events/interactionCreate.js`).
 The commands are loaded into the `client` object at runtime
 when the bot is started (see `index.js`).
 
-The bots interactivty is implemented using an event handling
+The bots interactivity is implemented using an event handling
 architecture wherein event handlers are specified by modules
 in the `events/` directory. Each `.js` file in `events/` implements
 a distinct event handler. The naming scheme mimics that of the 
