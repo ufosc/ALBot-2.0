@@ -84,13 +84,13 @@ Once your config.json is setup, it's time to run the application!
 First, run the following to deploy the commands to the bot:
 
 ```bash
-node deploy-commands.js
+npm run deploy-commands
 ```
 
 Next, launch the bot!
 
 ```bash
-node index.js
+npm run start
 ```
 
 If you see a "Ready! Logged in as. . ." message, you've succeeded!
@@ -98,29 +98,43 @@ If you see a "Ready! Logged in as. . ." message, you've succeeded!
 ## Architecture
 
 ALBot 2.0's functionality is distributed across several files.
-The `index.js` contains the 'main' of the program, and should
-be executed using node to launch the bot (`node index.js`).
-The `client` object in `index.js`
+The `src/index.ts` contains the 'main' of the program, and should
+be executed using node to launch the bot (`npm run start` or `ts-node src/index.ts`).
+The `client` object in `index.ts`
 is the bot - that is, it contains all the functionality as properties.
 
-The commands ALBot can perform are stored in the `commands/` directory.
-Each command is stored in its own `.js` file with the name of the command
+The commands ALBot can perform are stored in the `src/commands/` directory.
+Each command is stored in its own `.ts` file with the name of the command
 being the file name (e.g. command `/foo` is in `foo.js`).
-Each command file exports a module with the following attributes:
-`data`, which maps to a `SlashCommandBuilder` instance with
-name and description at minimum;
-and an `execute` function which accepts an `interaction` object.
-The `execute` function contains the command's functionality.
+All commands implement the `ICommand` inteface defined in `src/icommand.ts`.
+
+Each command object implements the `ICommand` inteface.
+`ICommand` describes an inteface with the following attributes:
++ `name`: the name of the command
++ `description`: a description of its purpose
++ `execute(interaction: Interaction)`: a function which
+contains the commands functionality.
+
 Dispatching interactions to the proper commands is handled
 by the `interactionCreate` event (see `events/interactionCreate.js`).
-The commands are loaded into the `client` object at runtime
-when the bot is started (see `index.js`).
+The commands are compiled into a key-value store at runtime
+when the bot is started, with names as keys and the object
+as value (see `src/commands.ts`).
+Import `commands.ts` to access this store.
 
 The bots interactivity is implemented using an event handling
 architecture wherein event handlers are specified by modules
-in the `events/` directory. Each `.js` file in `events/` implements
+in the `src/events/` directory. Each `.ts` file in `events/` exports
 a distinct event handler. The naming scheme mimics that of the 
 command files: an event `foo` is handled in `foo.js`.
+
+Each event handler implements the `IEvent` interface type,
+which includes the following attributes:
++ `name`: name of the event being handled
++ `once` (optional): true if the command only executes once,
+false if it should be run on every ocurrence.
++ `execute(any[]): void | Promise<void>`: the function executed to handle the event
+
 These events are loaded into the `client` object at runtime when
 the bot is started.
 

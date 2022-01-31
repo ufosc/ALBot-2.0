@@ -1,9 +1,13 @@
-module.exports = {
+import { BaseCommandInteraction, Interaction } from "discord.js";
+import { IEvent } from "../ievent";
+import commands from "../commands";
+
+export default <IEvent> {
 	name: 'interactionCreate',
-	async execute(interaction) {
+	async execute(interaction: Interaction): Promise<void> {
         if (!interaction.isCommand()) return;
 
-        const command = interaction.client.commands.get(interaction.commandName);
+        const command = commands[interaction.commandName];
 
         if (!command) {
             // command not found
