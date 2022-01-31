@@ -12,7 +12,7 @@ sections of this README.
 
 ## Dependencies
 
-The only non-npm managed dependencies are is Node.js.
+The only non-npm managed dependency is Node.js.
 [Install Node.js here.](https://nodejs.org/en/)
 This will also install `npm`.
 The necessary versions for `node` and `npm` are:
@@ -105,7 +105,7 @@ is the bot - that is, it contains all the functionality as properties.
 
 The commands ALBot can perform are stored in the `src/commands/` directory.
 Each command is stored in its own `.ts` file with the name of the command
-being the file name (e.g. command `/foo` is in `foo.js`).
+being the file name (e.g. command `/foo` is in `foo.ts`).
 All commands implement the `ICommand` inteface defined in `src/icommand.ts`.
 
 Each command object implements the `ICommand` inteface.
