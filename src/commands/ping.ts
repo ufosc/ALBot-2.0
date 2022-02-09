@@ -9,4 +9,8 @@ export const Ping: ICommand = {
     }
 }
 
+export function getCommands(): ICommand[] {
+    return [Ping];
+};
+
 export default Ping;
