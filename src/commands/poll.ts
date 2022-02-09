@@ -2,7 +2,7 @@ import { BaseCommandInteraction, Constants } from "discord.js";
 import { ICommand } from "../icommand";
 
 export const startPoll: ICommand = {
-    name: "startPoll",
+    name: "startpoll",
     description: "Opens a poll",
     options: [
         {
