@@ -12,5 +12,3 @@ export const User: ICommand = {
 export function getCommands(): ICommand[] {
     return [User];
 };
-
-export default User;

@@ -17,5 +17,3 @@ export const Server: ICommand = {
 export function getCommands(): ICommand[] {
     return [Server];
 };
-
-export default Server;
