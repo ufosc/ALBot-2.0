@@ -9,4 +9,6 @@ export const Orange: ICommand = {
     }
 }
 
-export default Orange;
+export function getCommands(): ICommand[] {
+    return [Orange];
+};

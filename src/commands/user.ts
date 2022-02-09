@@ -9,4 +9,6 @@ export const User: ICommand = {
     }
 }
 
-export default User;
+export function getCommands(): ICommand[] {
+    return [User];
+};
