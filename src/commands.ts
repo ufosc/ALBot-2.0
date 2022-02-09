@@ -16,6 +16,4 @@ for (const file of commandFiles) {
 	}
 }
 
-console.log(commands);
-
 export default commands;
