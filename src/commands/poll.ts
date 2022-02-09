@@ -13,7 +13,8 @@ export const startPoll: ICommand = {
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
-        await interaction.reply('NOT IMPELEMTED: Tried to create poll with name ');
+        let name = interaction.options.get("pollname")?.value;
+        await interaction.reply(`NOT IMPLEMENTED: Tried to create poll with name ${name}`);
     }
 }
 
