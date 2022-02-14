@@ -1,5 +1,5 @@
 import { throws } from "assert";
-import { BaseCommandInteraction, Constants } from "discord.js";
+import { BaseCommandInteraction, Constants, Interaction } from "discord.js";
 import { ICommand } from "../icommand";
 
 interface Option {
@@ -63,6 +63,10 @@ class PollService implements IPollService {
         }
     }
 
+    getAll(): Poll[] {
+        return this._polls;
+    }
+
     vote(id: number, choices: number[]): Poll | boolean {
         return false; // TODO 
     }
@@ -76,7 +80,10 @@ class PollService implements IPollService {
     }
 }
 
-export const startPoll: ICommand = {
+// Initialize empty at startup
+const pollService = new PollService([]);
+
+const startPoll: ICommand = {
     name: "startpoll",
     description: "Opens a poll",
     options: [
@@ -85,14 +92,50 @@ export const startPoll: ICommand = {
             description: "The name of the poll",
             required: true,
             type: Constants.ApplicationCommandOptionTypes.STRING
+        },
+        {
+            name: "question",
+            description: "The poll's question",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+        },
+        {
+            name: "choices",
+            description: "The question's choices. Format like this: option 1|option 2|option 3",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
         let name = interaction.options.get("pollname")?.value;
-        await interaction.reply(`NOT IMPLEMENTED: Tried to create poll with name ${name}`);
+        let questionString = interaction.options.get("question")?.value;
+        let choicesString = interaction.options.get("choices")?.value;
+        // TODO: Parse choicesString into options
+        let question: Question = {
+            statement: questionString as string,
+            options: []
+        }
+        pollService.create(name as string, [question]);
+        await interaction.reply(`Created poll with name ${name}`);
+    }
+}
+
+const polls: ICommand = {
+    name: "polls",
+    description: "See polls",
+    execute: async (interaction: BaseCommandInteraction) => {
+        let polls: Poll[] = pollService.getAll();
+        if (polls.length == 0) {
+            await interaction.reply("There are no polls right now!")
+        }
+        else {
+            let messageLines: string[] = ["Open Polls:"];
+            polls.forEach(poll => messageLines.push(`# ${poll.id}: ${poll.name}`));
+            await interaction.reply(messageLines.join("\n"));
+        }
     }
 }
 
 export function getCommands(): ICommand[] {
-    return [startPoll];
+    return [startPoll, polls];
 }
