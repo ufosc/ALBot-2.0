@@ -25,7 +25,7 @@ interface IPollService {
     get(id: number): Poll | boolean;
     vote(id: number, choices: number[]): Poll | boolean;
 }
-// TODO: Remove error handling in PollService
+// TODO: Improve error handling in PollService
 class PollService implements IPollService {
     private _polls: Poll[];
 
