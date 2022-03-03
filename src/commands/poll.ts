@@ -68,7 +68,27 @@ class PollService implements IPollService {
     }
 
     vote(id: number, choices: number[]): Poll | boolean {
-        return false; // TODO 
+        if (!this._isValidId(id)) {
+            return false;
+        }
+
+        let questions: Question[] = this._polls[id].questions
+        if (questions.length != choices.length) {
+            return false;
+        }
+
+        for (let i = 0; i < questions.length; i++) {
+            if (choices[i] >= questions[i].options.length ||
+                choices[i] < 0
+            ) {
+                return false;
+            }
+            else {
+                questions[i].options[choices[i]].votes += 1;
+            }
+        }
+        this._polls[id].questions = questions;
+        return this._polls[id];
     }
 
     _nextId(): number {
