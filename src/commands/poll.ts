@@ -129,8 +129,9 @@ const polls: ICommand = {
             await interaction.reply("There are no polls right now!")
         }
         else {
-            let messageLines: string[] = ["Open Polls:"];
-            polls.forEach(poll => messageLines.push(`# ${poll.id}: ${poll.name}`));
+            let divider: string = "----------------"
+            let messageLines: string[] = ["Open Polls", divider];
+            polls.forEach(poll => messageLines.push(`#${poll.id} | ${poll.name}`));
             await interaction.reply(messageLines.join("\n"));
         }
     }
