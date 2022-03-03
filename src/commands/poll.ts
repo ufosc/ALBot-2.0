@@ -172,19 +172,21 @@ const seePoll: ICommand = {
         else {
             message.push(poll.name);
         }
+        let questionNum: number = 1;
         for (const question of poll.questions) {
             message.push("\n");
-            message.push(question.statement);
-            if (!poll.active) {
-                for (const option of question.options) {
-                    message.push(`${indent}${option.content} (${option.votes})`)
+            message.push(`${questionNum}. ${question.statement}`);
+            let optionNum: number = 1;
+            for (const option of question.options) {
+                if (!poll.active) {
+                    message.push(`${indent}${optionNum}. ${option.content} (${option.votes})`);
                 }
-            }
-            else {
-                for (const option of question.options) {
-                    message.push(`${indent}${option.content}`)
+                else {
+                    message.push(`${indent}${optionNum}. ${option.content}`);
                 }
+                optionNum++;
             }
+            questionNum++;
         }
         await interaction.reply(message.join("\n"))
     }
