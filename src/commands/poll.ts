@@ -139,6 +139,57 @@ const polls: ICommand = {
     }
 }
 
+const seePoll: ICommand = {
+    name: "seepoll",
+    description: "See a poll and its questions",
+    options: [
+        {
+            name: "pollid",
+            description: "The ID number of the poll",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.INTEGER
+        }
+    ],
+    execute: async (interaction: BaseCommandInteraction) => {
+        let id = interaction.options.get("pollid")?.value;
+        if (id === undefined) {
+            await interaction.reply(`Poll not found: bad ID value (ID=${id})`)
+            return;
+        }
+
+        const _poll: Poll | boolean = pollService.get(id as number);
+        if (!_poll) {
+            await interaction.reply(`Poll not found: poll with id=${id} could not be found`)
+            return;
+        }
+
+        const poll: Poll = _poll as Poll;
+        let indent: string = "    ";
+        let message: string[] = [];
+        if (!poll.active) {
+            message.push(`${poll.name} [CLOSED]`)
+        }
+        else {
+            message.push(poll.name);
+        }
+        for (const question of poll.questions) {
+            message.push("\n");
+            message.push(question.statement);
+            if (!poll.active) {
+                for (const option of question.options) {
+                    message.push(`${indent}${option.content} (${option.votes})`)
+                }
+            }
+            else {
+                for (const option of question.options) {
+                    message.push(`${indent}${option.content}`)
+                }
+            }
+        }
+        await interaction.reply(message.join("\n"))
+    }
+}
+
 export function getCommands(): ICommand[] {
-    return [startPoll, polls];
+    return [startPoll, polls, seePoll];
 }
