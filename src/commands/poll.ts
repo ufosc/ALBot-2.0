@@ -1,5 +1,5 @@
 import { throws } from "assert";
-import { BaseCommandInteraction, Constants, Interaction } from "discord.js";
+import { Base, BaseCommandInteraction, Constants, Interaction } from "discord.js";
 import { ICommand } from "../icommand";
 
 interface Option {
@@ -192,6 +192,32 @@ const seePoll: ICommand = {
     }
 }
 
+const closePoll: ICommand = {
+    name: "closepoll",
+    description: "Close a poll from voting and enable viewing the results",
+    options: [
+        {
+            name: "pollid",
+            description: "The ID number of the poll",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.INTEGER
+        }
+    ],
+    execute: async (interaction: BaseCommandInteraction) => {
+        let id = interaction.options.get("pollid")?.value;
+        if (id === undefined) {
+            await interaction.reply("Poll not found and closed - id undefined");
+        }
+
+        if(pollService.close(id as number)) {
+            await interaction.reply(`Poll #${id} closed successfully`);
+        }
+        else {
+            await interaction.reply(`Poll not found and closed - poll with id=${id} could not be found`)
+        }
+    }
+}
+
 export function getCommands(): ICommand[] {
-    return [startPoll, polls, seePoll];
+    return [startPoll, polls, seePoll, closePoll];
 }
