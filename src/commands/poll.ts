@@ -110,10 +110,12 @@ const startPoll: ICommand = {
         let name = interaction.options.get("pollname")?.value;
         let questionString = interaction.options.get("question")?.value;
         let choicesString = interaction.options.get("choices")?.value;
-        // TODO: Parse choicesString into options
+        let choices: string[] = (choicesString as string).split("|").map(s => s.trim());
+        let _options: Option[] = [];
+        choices.forEach(choice => _options.push({content: choice, votes: 0}));
         let question: Question = {
             statement: questionString as string,
-            options: []
+            options: _options
         }
         pollService.create(name as string, [question]);
         await interaction.reply(`Created poll with name ${name}`);
