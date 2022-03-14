@@ -77,16 +77,19 @@ class PollService implements IPollService {
             return false;
         }
 
+        // Validate all choices are correct before counting vote
         for (let i = 0; i < questions.length; i++) {
             if (choices[i] >= questions[i].options.length ||
                 choices[i] < 0
             ) {
                 return false;
             }
-            else {
-                questions[i].options[choices[i]].votes += 1;
-            }
         }
+
+        for (let i = 0; i < questions.length; i++) {
+            questions[i].options[choices[i]].votes += 1;
+        }
+
         this._polls[id].questions = questions;
         return this._polls[id];
     }
@@ -238,6 +241,62 @@ const closePoll: ICommand = {
     }
 }
 
+const vote: ICommand = {
+    name: "vote",
+    description: "Vote in a poll",
+    options: [
+        {
+            name: "pollid",
+            description: "The ID number of the poll",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.INTEGER
+        },
+        {
+            name: "choices",
+            description: "The selected choices. Format like this: choice # for Q1|choice # for Q2|choice # for Q3",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+        }
+    ],
+    execute: async (interaction: BaseCommandInteraction) => {
+        let id = interaction.options.get("pollid")?.value;
+        if (id === undefined) {
+            await interaction.reply("Poll not found and closed - id undefined");
+            return
+        }
+
+        // TODO: Check if poll is closed
+        let poll = pollService.get(id as number);
+        if (!poll) {
+            await interaction.reply("Vote not counted - bad poll id");
+            return;
+        }
+        else if (!(poll as Poll).active) {
+            await interaction.reply("Vote not counted - poll is closed");
+            return;
+        }
+
+        let choicesString = interaction.options.get("choices")?.value;
+        if (choicesString === undefined) {
+            await interaction.reply("Vote not counted - choices undefined");
+            return;
+        }
+        let choices: number[] = (choicesString as string).split("|").map(s => parseInt(s.trim()) - 1);
+        let nans = choices.filter(x => isNaN(x));
+        if (nans.length != 0) {
+            await interaction.reply("Vote not counted - non-numeric choices")
+        }
+
+        const success = pollService.vote(id as number, choices);
+        if (!success) {
+            await interaction.reply("Vote not counted - bad poll id or choices");
+        }
+        else {
+            await interaction.reply("Vote counted!")
+        }
+    }
+}
+
 export function getCommands(): ICommand[] {
-    return [startPoll, polls, seePoll, closePoll];
+    return [startPoll, polls, seePoll, closePoll, vote];
 }
