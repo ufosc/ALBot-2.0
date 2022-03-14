@@ -9,7 +9,7 @@ import logger from './logging/logging';
 const rest = new REST({ version: '9' }).setToken(token);
 
 const commandList: ICommand[] = [];
-logger.error("test3")
+logger.error("test5")
 for (const commandName in commands) {
 	commandList.push(commands[commandName]);
 }
