@@ -19,14 +19,8 @@ interface Poll {
     active: boolean;
 }
 
-interface IPollService {
-    create(name: string, questions: Question[]): Poll | boolean;
-    close(id: number): boolean;
-    get(id: number): Poll | boolean;
-    vote(id: number, choices: number[]): Poll | boolean;
-}
 // TODO: Improve error handling in PollService
-class PollService implements IPollService {
+class PollService {
     private _polls: Poll[];
 
     constructor(polls: Poll[]) {
