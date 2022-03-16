@@ -88,11 +88,11 @@ class PollService {
         return this._polls[id];
     }
 
-    _nextId(): number {
+    private _nextId(): number {
         return this._polls.length;
     }
 
-    _isValidId(id: number): boolean {
+    private _isValidId(id: number): boolean {
         return id >= 0 && id < this._polls.length;
     }
 }
