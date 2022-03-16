@@ -265,7 +265,6 @@ const vote: ICommand = {
             return
         }
 
-        // TODO: Check if poll is closed
         let poll = pollService.get(id as number);
         if (!poll) {
             await interaction.reply("Vote not counted - bad poll id");
