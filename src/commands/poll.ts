@@ -187,6 +187,7 @@ const seePoll: ICommand = {
         const poll: Poll = _poll as Poll;
         let indent: string = "        ";
         let message: string[] = [];
+        message.push("```");
         if (!poll.active) {
             message.push(`${poll.name} [CLOSED]`)
         }
@@ -203,6 +204,7 @@ const seePoll: ICommand = {
             }
             questionNum++;
         }
+        message.push("```")
         await interaction.reply(message.join("\n"))
     }
 }
