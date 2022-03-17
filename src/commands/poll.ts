@@ -149,8 +149,12 @@ const polls: ICommand = {
         }
         else {
             let divider: string = "----------------"
-            let messageLines: string[] = ["Open Polls", divider];
-            polls.forEach(poll => messageLines.push(`#${poll.id} | ${poll.name}`));
+            let messageLines: string[] = ["```", "Polls", divider];
+            polls.forEach(poll => messageLines.push(
+                `| #${poll.id} | ${poll.name}${poll.active ? '' : '*'}`
+            ));
+            messageLines.push("*closed");
+            messageLines.push("```")
             await interaction.reply(messageLines.join("\n"));
         }
     }
