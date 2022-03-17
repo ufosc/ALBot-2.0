@@ -16,7 +16,8 @@
     "@discordjs/rest": "^0.2.0-canary.0",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.6.0",
-    "eslint": "^8.7.0"
+    "eslint": "^8.7.0",
+    "winston": "^3.6.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.13",
