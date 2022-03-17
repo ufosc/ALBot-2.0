@@ -181,7 +181,7 @@ const seePoll: ICommand = {
         }
 
         const poll: Poll = _poll as Poll;
-        let indent: string = "    ";
+        let indent: string = "        ";
         let message: string[] = [];
         if (!poll.active) {
             message.push(`${poll.name} [CLOSED]`)
@@ -191,16 +191,10 @@ const seePoll: ICommand = {
         }
         let questionNum: number = 1;
         for (const question of poll.questions) {
-            message.push("\n");
             message.push(`${questionNum}. ${question.statement}`);
             let optionNum: number = 1;
             for (const option of question.options) {
-                if (!poll.active) {
-                    message.push(`${indent}${optionNum}. ${option.content} (${option.votes})`);
-                }
-                else {
-                    message.push(`${indent}${optionNum}. ${option.content}`);
-                }
+                message.push(`${indent}${optionNum}. ${option.content} (${option.votes})`);
                 optionNum++;
             }
             questionNum++;
