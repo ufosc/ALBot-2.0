@@ -3,10 +3,6 @@ import { ICommand } from "../icommand";
 import config from '../../config.json'
 let directions = new Set<string>();
 directions.add("club")
-class Role {
-
-
-}
 
 const GiveRole: ICommand = {
     name: "giverole",
@@ -22,7 +18,7 @@ const GiveRole: ICommand = {
     execute: async (interaction: BaseCommandInteraction) => {
         let name = interaction.options.get("role")?.value;
         if(directions.has(name as string))
-		{
+	{
             var guild: any = interaction.client.guilds.cache.get(config.guildId)
             const member = await guild.members.fetch(interaction.user.id)
             const role = await guild.roles.cache.find((r: any) => r.name === 'club')
