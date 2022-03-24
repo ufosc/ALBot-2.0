@@ -136,6 +136,7 @@ const startPoll: ICommand = {
         }
         pollService.create(name as string, [question]);
         await interaction.reply(`Created poll with name ${name}`);
+        return;
     }
 }
 
@@ -145,7 +146,8 @@ const polls: ICommand = {
     execute: async (interaction: BaseCommandInteraction) => {
         let polls: Poll[] = pollService.getAll();
         if (polls.length == 0) {
-            await interaction.reply("There are no polls right now!")
+            await interaction.reply("There are no polls right now!");
+            return;
         }
         else {
             let divider: string = "----------------"
@@ -156,6 +158,7 @@ const polls: ICommand = {
             messageLines.push("*closed");
             messageLines.push("```")
             await interaction.reply(messageLines.join("\n"));
+            return;
         }
     }
 }
@@ -205,7 +208,8 @@ const seePoll: ICommand = {
             questionNum++;
         }
         message.push("```")
-        await interaction.reply(message.join("\n"))
+        await interaction.reply(message.join("\n"));
+        return;
     }
 }
 
@@ -224,6 +228,7 @@ const closePoll: ICommand = {
         let id = interaction.options.get("pollid")?.value;
         if (id === undefined) {
             await interaction.reply("Poll not found and closed - id undefined");
+            return;
         }
 
         if(pollService.close(id as number)) {
@@ -232,6 +237,7 @@ const closePoll: ICommand = {
         else {
             await interaction.reply(`Poll not found and closed - poll with id=${id} could not be found`)
         }
+        return;
     }
 }
 
@@ -256,7 +262,7 @@ const vote: ICommand = {
         let id = interaction.options.get("pollid")?.value;
         if (id === undefined) {
             await interaction.reply("Poll not found and closed - id undefined");
-            return
+            return;
         }
 
         let poll = pollService.get(id as number);
@@ -277,7 +283,8 @@ const vote: ICommand = {
         let choices: number[] = (choicesString as string).split("|").map(s => parseInt(s.trim()) - 1);
         let nans = choices.filter(x => isNaN(x));
         if (nans.length != 0) {
-            await interaction.reply("Vote not counted - non-numeric choices")
+            await interaction.reply("Vote not counted - non-numeric choices");
+            return;
         }
 
         const success = pollService.vote(id as number, choices);
@@ -285,8 +292,9 @@ const vote: ICommand = {
             await interaction.reply("Vote not counted - bad poll id or choices");
         }
         else {
-            await interaction.reply("Vote counted!")
+            await interaction.reply("Vote counted!");
         }
+        return;
     }
 }
 
