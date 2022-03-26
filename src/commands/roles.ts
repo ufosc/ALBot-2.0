@@ -10,7 +10,18 @@ let refreshRoles = async function (interaction: BaseCommandInteraction): Promise
     var guild: any = interaction.client.guilds.cache.get(config.guildId)
     roles.clear()
     const role = await guild.roles.cache.forEach((r: any) => roles.add(r.name))
+     roles.forEach((role: string) => {
+        if (role.startsWith('@')) {
+          roles.delete(role);
+        }
+      })
 
+      if(interaction.client.user != null)
+      { 
+           roles.delete(interaction.client.user.username)
+      }
+
+      
 }
 const GiveRole: ICommand = {
     name: "giverole",
@@ -29,7 +40,7 @@ const GiveRole: ICommand = {
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
-        if((roles.has(name as string) && permitted.has(name as string)) || (member.permissions.has('MANAGE_ROLES')) )
+        if((roles.has(name as string) && permitted.has(name as string)) || (member.permissions.has('MANAGE_ROLES') && roles.has(name as string)) )
 	    {
             const role = await guild.roles.cache.find((r: any) => r.name === (name as string))
             member.roles.add(role)
@@ -60,7 +71,7 @@ const OpenRole: ICommand = {
         let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
-        if((member.permissions.has('MANAGE_ROLES')))
+        if((member.permissions.has('MANAGE_ROLES') && roles.has(name as string)))
 	    {            
             
            permitted.add((name as string))
@@ -93,7 +104,7 @@ const CloseRole: ICommand = {
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
-        if((member.permissions.has('MANAGE_ROLES')))
+        if((member.permissions.has('MANAGE_ROLES') && roles.has(name as string)))
 	    {             
  
             if(permitted.has(name as string))
@@ -118,7 +129,7 @@ const ShowRoles: ICommand = {
     description: "See roles",
     
     execute: async (interaction: BaseCommandInteraction) => {
-            refreshRoles(interaction)
+            await refreshRoles(interaction)
 
             let divider: string = "----------------"
             let messageLines: string[] = ["```", "Roles", divider];
