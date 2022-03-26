@@ -73,10 +73,16 @@ const OpenRole: ICommand = {
         const member = await guild.members.fetch(interaction.user.id)
         if((member.permissions.has('MANAGE_ROLES') && roles.has(name as string)))
 	    {            
-            
-           permitted.add((name as string))
-       
-           await interaction.reply(`role permissions saved successfully!`);
+            if((name as string) !== "officer")
+           {
+                permitted.add((name as string))
+                await interaction.reply(`role permissions saved successfully!`);
+           }
+           else
+           {
+            await interaction.reply(`Officer channel access blocked`);
+
+           }
 
         }
         else 
