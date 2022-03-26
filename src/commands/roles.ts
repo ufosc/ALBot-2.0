@@ -5,6 +5,7 @@ import { dir } from "console";
 let roles = new Set<string>();
 roles.add("club")
 roles.add("Officer")
+roles.add("blabla")
 
 let permitted = new Set<string>();
 
@@ -113,8 +114,10 @@ const ShowRoles: ICommand = {
             let divider: string = "----------------"
             let messageLines: string[] = ["```", "Roles", divider];
             roles.forEach(role => messageLines.push(
-               role
+               `${role}${permitted.has(role)? '*' : ''}`
             ));
+            messageLines.push("*members can self-assign");
+
             messageLines.push("```")
             await interaction.reply(messageLines.join("\n"));
             return;
