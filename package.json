@@ -17,6 +17,7 @@
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.6.0",
     "eslint": "^8.7.0",
+    "snoowrap": "^1.23.0",
     "winston": "^3.6.0"
   },
   "devDependencies": {
