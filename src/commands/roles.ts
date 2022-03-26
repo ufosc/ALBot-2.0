@@ -35,7 +35,7 @@ const GiveRole: ICommand = {
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
-        refreshRoles(interaction)
+        await refreshRoles(interaction)
         let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
@@ -66,7 +66,7 @@ const OpenRole: ICommand = {
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
-        refreshRoles(interaction)
+        await refreshRoles(interaction)
 
         let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
@@ -98,7 +98,7 @@ const CloseRole: ICommand = {
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
-        refreshRoles(interaction)
+        await refreshRoles(interaction)
 
         let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
