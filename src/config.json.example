@@ -1,5 +1,14 @@
 {
     "clientId": "clientIdGoesHere",
     "guildId": "guildIdGoesHere",
-    "token": "tokenGoesHere"
+    "token": "tokenGoesHere",
+    "reddit": {
+        // Can be left empty
+        "userAgrent": "Name of the user agent",
+        "clientId": "Reddit API app client id",
+        "clientSecret": "Reddit API app client secret",
+        "accessToken": "Reddit API access token",
+        "refreshToken": "Reddit API refresh token"
+    }
+}
 }
