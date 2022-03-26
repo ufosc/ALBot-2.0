@@ -12,6 +12,10 @@ interface Post {
 }
 
 async function scrapeSubreddit(name: string) {
+    if (!redditScrapingEnabled) {
+        throw new Error('Reddit scraping is disabled');
+    }
+
     const scraper = new Snoowrap({
         userAgent: config.reddit.userAgrent,
         clientId: config.reddit.clientId,
@@ -38,6 +42,10 @@ export const topPost: ICommand = {
     name: 'toppost',
     description: 'Get the top post off r/programming',
     execute: async (interaction: BaseCommandInteraction) => {
+        if (!redditScrapingEnabled) {
+            await interaction.reply('Reddit scraping is disabled')
+        }
+
         try {
             const posts: Post[] = await scrapeSubreddit('programming');
             await interaction.reply(
