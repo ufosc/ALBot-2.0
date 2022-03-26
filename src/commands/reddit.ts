@@ -35,5 +35,26 @@ async function scrapeSubreddit(name: string) {
 }
 
 export const topPost: ICommand = {
+    name: 'toppost',
+    description: 'Get the top post off r/programming',
+    execute: async (interaction: BaseCommandInteraction) => {
+        try {
+            const posts: Post[] = await scrapeSubreddit('programming');
+            await interaction.reply(
+                `
+                \`\`\`
+                ${JSON.stringify(posts,null,2)}
+                \`\`\`
+                `
+            );
+        }
+        catch (err) {
+            await interaction.reply(JSON.stringify(err,null,2));
+        }
+        return;
+    }
+}
 
+export function getCommands(): ICommand[] {
+    return [topPost];
 }
