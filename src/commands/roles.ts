@@ -6,6 +6,8 @@ let roles = new Set<string>();
 roles.add("club")
 roles.add("Officer")
 
+let permitted = new Set<string>();
+
 const GiveRole: ICommand = {
     name: "giverole",
     description: "Gives a user a role",
@@ -19,18 +21,19 @@ const GiveRole: ICommand = {
     ],
     execute: async (interaction: BaseCommandInteraction) => {
         let name = interaction.options.get("role")?.value;
-        if(roles.has(name as string))
-	{
-            var guild: any = interaction.client.guilds.cache.get(config.guildId)
-            const member = await guild.members.fetch(interaction.user.id)
+        var guild: any = interaction.client.guilds.cache.get(config.guildId)
+        const member = await guild.members.fetch(interaction.user.id)
+
+        if((roles.has(name as string) && permitted.has(name as string)) ||(member.roles.cache.some((role: any) => role.name === 'Officer')) )
+	    {
             const role = await guild.roles.cache.find((r: any) => r.name === (name as string))
             member.roles.add(role)
             await interaction.reply(`Added to role successfully!`);
 
         }
-        else 
+        else
         {
-            await interaction.reply(`No such role`);
+            await interaction.reply(`No such role or not permitted`);
 
         }
     }
@@ -41,31 +44,21 @@ const OpenRole: ICommand = {
     options: [
         {
             name: "role",
-            description: "Role that admin wants to create",
+            description: "Role that admin wants to give permissions for",
             required: true,
             type: Constants.ApplicationCommandOptionTypes.STRING
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
-        let name1 = interaction.options.get("role")?.value;
+        let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
-        let tempStr: string = name1 as string
         if(member.roles.cache.some((role: any) => role.name === 'Officer'))
 	    {            
             
-           roles.add((name1 as string))
-           const newRole = await guild.roles.create({
-                data: {
-                  name: (name1 as string),
-                  color: 'BLUE',
-                },
-                reason: 'For fun',
-              })
-              .then(() => console.log("here"))
-              .catch(console.error)
-
-            await interaction.reply(`role created successfully!`);
+           permitted.add((name as string))
+       
+           await interaction.reply(`role permissions saved successfully!`);
 
         }
         else 
@@ -81,7 +74,7 @@ const CloseRole: ICommand = {
     options: [
         {
             name: "role",
-            description: "Role that admin wants to close",
+            description: "Role that admin wants to close permissions for",
             required: true,
             type: Constants.ApplicationCommandOptionTypes.STRING
         }
@@ -91,23 +84,16 @@ const CloseRole: ICommand = {
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
-        if(member.roles.cache.some('Officer'))
+        if(member.roles.cache.some((role: any) => role.name === 'Officer'))
 	    {             
  
-            if(roles.has(name as string))
+            if(permitted.has(name as string))
              {   
-                const role1: any = await guild.roles.cache.find((r: any) => r.name === (name as string))
-                role1.members.forEach((member: any, i: any) => { // Looping through the members of Role.
-                    setTimeout(() => {
-                        member.roles.remove(role1); // Removing the Role.
-                    }, i * 1000);
-                });
-               
-                roles.delete((name as string))
-                await interaction.reply(`no such role!`)
+                permitted.delete((name as string))
+                await interaction.reply(`role permissions removed successfully!`)
              }
              else
-                await interaction.reply(`role removed successfully!`);
+                await interaction.reply(`no such role!`);
 
 
         }
