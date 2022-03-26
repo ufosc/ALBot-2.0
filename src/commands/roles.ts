@@ -3,12 +3,15 @@ import { ICommand } from "../icommand";
 import config from '../../config.json'
 import { dir } from "console";
 let roles = new Set<string>();
-roles.add("club")
-roles.add("Officer")
-roles.add("blabla")
 
 let permitted = new Set<string>();
 
+let refreshRoles = async function (interaction: BaseCommandInteraction): Promise<any> {
+    var guild: any = interaction.client.guilds.cache.get(config.guildId)
+    roles.clear()
+    const role = await guild.roles.cache.forEach((r: any) => roles.add(r.name))
+
+}
 const GiveRole: ICommand = {
     name: "giverole",
     description: "Gives a user a role",
@@ -21,11 +24,12 @@ const GiveRole: ICommand = {
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
+        refreshRoles(interaction)
         let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
-        if((roles.has(name as string) && permitted.has(name as string)) ||(member.roles.cache.some((role: any) => role.name === 'Officer')) )
+        if((roles.has(name as string) && permitted.has(name as string)) || (member.permissions.has('MANAGE_ROLES')) )
 	    {
             const role = await guild.roles.cache.find((r: any) => r.name === (name as string))
             member.roles.add(role)
@@ -51,10 +55,12 @@ const OpenRole: ICommand = {
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
+        refreshRoles(interaction)
+
         let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
-        if(member.roles.cache.some((role: any) => role.name === 'Officer'))
+        if((member.permissions.has('MANAGE_ROLES')))
 	    {            
             
            permitted.add((name as string))
@@ -81,11 +87,13 @@ const CloseRole: ICommand = {
         }
     ],
     execute: async (interaction: BaseCommandInteraction) => {
+        refreshRoles(interaction)
+
         let name = interaction.options.get("role")?.value;
         var guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
-        if(member.roles.cache.some((role: any) => role.name === 'Officer'))
+        if((member.permissions.has('MANAGE_ROLES')))
 	    {             
  
             if(permitted.has(name as string))
@@ -110,7 +118,8 @@ const ShowRoles: ICommand = {
     description: "See roles",
     
     execute: async (interaction: BaseCommandInteraction) => {
-   
+            refreshRoles(interaction)
+
             let divider: string = "----------------"
             let messageLines: string[] = ["```", "Roles", divider];
             roles.forEach(role => messageLines.push(
