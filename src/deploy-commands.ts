@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { REST } = require('@discordjs/rest');
 import { Routes } from 'discord-api-types/v9';
-const { clientId, guildId, token } = require('../config.json');
+const { clientId, guildId, token } = require('./config.json');
 import commands from "./commands";
 import { ICommand } from "./icommand";
 
