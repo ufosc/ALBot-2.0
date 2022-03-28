@@ -7,7 +7,7 @@ let roles = new Set<string>();
 let permitted = new Set<string>();
 
 let refreshRoles = async function (interaction: BaseCommandInteraction): Promise<any> {
-    var guild: any = interaction.client.guilds.cache.get(config.guildId)
+    let guild: any = interaction.client.guilds.cache.get(config.guildId)
     roles.clear()
     const role = await guild.roles.cache.forEach((r: any) => roles.add(r.name))
      roles.forEach((role: string) => {
@@ -21,7 +21,6 @@ let refreshRoles = async function (interaction: BaseCommandInteraction): Promise
            roles.delete(interaction.client.user.username)
       }
 
-      
 }
 const GiveRole: ICommand = {
     name: "giverole",
@@ -37,7 +36,7 @@ const GiveRole: ICommand = {
     execute: async (interaction: BaseCommandInteraction) => {
         await refreshRoles(interaction)
         let name = interaction.options.get("role")?.value;
-        var guild: any = interaction.client.guilds.cache.get(config.guildId)
+        let guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
         if((roles.has(name as string) && permitted.has(name as string)) || (member.permissions.has('MANAGE_ROLES') && roles.has(name as string)) )
@@ -69,7 +68,7 @@ const OpenRole: ICommand = {
         await refreshRoles(interaction)
 
         let name = interaction.options.get("role")?.value;
-        var guild: any = interaction.client.guilds.cache.get(config.guildId)
+        let guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
         if((member.permissions.has('MANAGE_ROLES') && roles.has(name as string)))
 	    {            
@@ -107,7 +106,7 @@ const CloseRole: ICommand = {
         await refreshRoles(interaction)
 
         let name = interaction.options.get("role")?.value;
-        var guild: any = interaction.client.guilds.cache.get(config.guildId)
+        let guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
         if((member.permissions.has('MANAGE_ROLES') && roles.has(name as string)))
@@ -119,7 +118,7 @@ const CloseRole: ICommand = {
                 await interaction.reply(`role permissions removed successfully!`)
              }
              else
-                await interaction.reply(`no such role!`);
+                await interaction.reply(`either role does not exist or is already open!`);
 
 
         }
