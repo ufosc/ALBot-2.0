@@ -54,7 +54,7 @@ export const projects: ICommand = {
                             :star: 4`)
             .setColor("RED")
             .addField("Language:", "Typescript", true)
-            .addField("Roles:", "Ninja", true)
+            .addField("Roles:", "bot-dev", true)
             .addField("Resources:", Albot_resources, false)
         
         var Documiner = new MessageEmbed()
