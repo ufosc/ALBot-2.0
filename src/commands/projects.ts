@@ -1,9 +1,9 @@
-import { BaseCommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed} from "discord.js";
+import { BaseCommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, Constants} from "discord.js";
 import { ICommand } from "../icommand";
 import config from '../../config.json'
 import projectData from "../projects.json"
 
-export const projects: ICommand = {
+const projects: ICommand = {
     name: "projects",
     description: "Display Active Projects",
     options: [
@@ -66,7 +66,13 @@ export const projects: ICommand = {
         
 
         const filter = (button: MessageComponentInteraction) => button.customId === "backward" || button.customId === "forward" || button.customId === "assign-role" || button.customId === "remove-role";
-        const collector = interaction.channel?.createMessageComponentCollector({filter})
+        const collector = interaction.channel?.createMessageComponentCollector({filter, time: 60000})
+
+        // Delete message after timeout
+        collector?.on('end', async ()=> {
+            await interaction.deleteReply()
+        })
+
 
         collector?.on('collect', async button => {
             if (button.customId === "backward") {
@@ -115,6 +121,69 @@ export const projects: ICommand = {
     }
 }
 
+const addResource: ICommand = {
+    name: "add-resource",
+    description: "Add resource to a project",
+    options: [
+        {
+            name: "project-name",
+            description: "Name of project",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+        },
+        {
+            name: "resource-title",
+            description: "Title of resource",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+        },
+        {
+            name: "resource-url",
+            description: "Url of resource",
+            required: true,
+            type: Constants.ApplicationCommandOptionTypes.STRING
+        },
+
+    ],
+
+    execute: async (interaction: BaseCommandInteraction) => {
+        const fs = require("fs")
+        
+        var keys = Object.keys(projectData)
+        var projectName = interaction.options.get("project-name")?.value as string
+        var resourceTitle = interaction.options.get("resource-title")?.value as string
+        var resourceURL = interaction.options.get("resource-url")?.value as string
+        
+        // Check if valid project
+        if (!keys.includes(projectName)) {
+            interaction.reply("Not a valid Project!")
+            return
+        }
+
+        var resources = projectData[projectName as keyof typeof projectData].fields[2].value
+
+        // Adding new resource
+        if (resources === "None") {
+            // If this is the first resource, remove the None 
+            projectData[projectName as keyof typeof projectData].fields[2].value = `[${resourceTitle}](${resourceURL})`
+        }
+        else {
+            // Concat with previous resources
+            projectData[projectName as keyof typeof projectData].fields[2].value = resources.concat(`\n[${resourceTitle}](${resourceURL})`)
+        }
+
+        fs.writeFile('src/projects.json', JSON.stringify(projectData, null, 4), (err:any) => {
+            if (err) {
+                interaction.reply("Resource could not be added")
+            }
+            else {
+                interaction.reply("Resource successfully added!")
+            }
+        })
+    }
+}
+
+
 export function getCommands(): ICommand[] {
-    return [projects];
+    return [projects, addResource];
 }
