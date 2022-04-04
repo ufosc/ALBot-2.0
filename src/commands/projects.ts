@@ -99,6 +99,14 @@ const projects: ICommand = {
                 // Find Role and Add to member
                 let roleName = projectData[getProject(page)].fields[1].value
                 var role = interaction.guild?.roles.cache.find(role => role.name === roleName)
+                
+                // Exit if role not available
+                if (role === undefined) {
+                    await interaction.followUp("Role not Available")
+                    button.deferUpdate()
+                    return
+                }
+
                 member.roles.add(role)
                 row = remove
                 await interaction.editReply({embeds: [projectData[getProject(page)]], components: [row]})
@@ -110,6 +118,14 @@ const projects: ICommand = {
                 // Find role and remove from member
                 let roleName = projectData[getProject(page)].fields[1].value
                 var role = interaction.guild?.roles.cache.find(role => role.name === roleName)
+                
+                // Exit if role not available
+                if (role === undefined) {
+                    await interaction.followUp("Role not Available")
+                    button.deferUpdate()
+                    return
+                }
+                
                 member.roles.remove(role)
                 row = assign
                 await interaction.editReply({embeds: [projectData[getProject(page)]], components: [row]})
