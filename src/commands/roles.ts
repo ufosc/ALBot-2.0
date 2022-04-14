@@ -4,7 +4,7 @@ import config from '../../config.json'
 import { dir } from "console";
 let roles = new Set<string>();
 
-let permitted = new Set<string>();
+export let permitted = new Set<string>();
 
 let refreshRoles = async function (interaction: BaseCommandInteraction): Promise<any> {
     let guild: any = interaction.client.guilds.cache.get(config.guildId)

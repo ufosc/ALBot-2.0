@@ -2,6 +2,7 @@ import { BaseCommandInteraction, MessageActionRow, MessageButton, MessageCompone
 import { ICommand } from "../icommand";
 import config from '../../config.json'
 import projectData from "../projects.json"
+import { permitted } from "./roles";
 
 const projects: ICommand = {
     name: "projects",
@@ -10,7 +11,6 @@ const projects: ICommand = {
     ],
 
     execute: async (interaction: BaseCommandInteraction) => {
-        
         // User info 
         let guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
@@ -107,6 +107,18 @@ const projects: ICommand = {
                     return
                 }
 
+                if (role.name === "officer") {
+                    await interaction.followUp("Only officers can have this role")
+                    button.deferUpdate()
+                    return
+                }
+
+                if (!permitted.has(role.name)) {
+                    await interaction.followUp("This role is not open")
+                    button.deferUpdate()
+                    return
+                }
+
                 member.roles.add(role)
                 row = remove
                 await interaction.editReply({embeds: [projectData[getProject(page)]], components: [row]})
@@ -125,7 +137,19 @@ const projects: ICommand = {
                     button.deferUpdate()
                     return
                 }
+
+                if (role.name === "officer") {
+                    await interaction.followUp("Only officers can have this role")
+                    button.deferUpdate()
+                    return
+                }
                 
+                if (!permitted.has(role.name)) {
+                    await interaction.followUp("This role is not open")
+                    button.deferUpdate()
+                    return
+                }
+
                 member.roles.remove(role)
                 row = assign
                 await interaction.editReply({embeds: [projectData[getProject(page)]], components: [row]})
