@@ -65,7 +65,7 @@ const projects: ICommand = {
         await interaction.reply({embeds: [projectData[getProject(page)]], components: [row]})
         
 
-        const filter = (button: MessageComponentInteraction) => button.customId === "backward" || button.customId === "forward" || button.customId === "assign-role" || button.customId === "remove-role";
+        const filter = (button: MessageComponentInteraction) => (button.customId === "backward" || button.customId === "forward" || button.customId === "assign-role" || button.customId === "remove-role") && button.user.id === interaction.user.id;
         const collector = interaction.channel?.createMessageComponentCollector({filter, time: 60000})
 
         // Delete message after timeout
