@@ -15,7 +15,7 @@
             },
             {
                 "name": "Resources",
-                "value": "[Intro to TypeScript](https://youtu.be/gp5H0Vw39yw)\n[Discord.js Documentation](https://discord.js.org/#/)\n[Discrod.js Guide](https://discordjs.guide/#before-you-begin)",
+                "value": "[Intro to TypeScript](https://youtu.be/gp5H0Vw39yw)\n[Discord.js Documentation](https://discord.js.org/#/)\n[Discord.js Guide](https://discordjs.guide/#before-you-begin)",
                 "inline": false
             }
         ]
