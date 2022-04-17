@@ -1,4 +1,4 @@
-import { BaseCommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, Constants, Role} from "discord.js";
+import { BaseCommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, Constants} from "discord.js";
 import { ICommand } from "../icommand";
 import config from '../../config.json'
 import projectData from "../projects.json"
