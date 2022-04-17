@@ -1,4 +1,4 @@
-import { BaseCommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, Constants} from "discord.js";
+import { BaseCommandInteraction, MessageActionRow, MessageButton, MessageComponentInteraction, Constants, Role} from "discord.js";
 import { ICommand } from "../icommand";
 import config from '../../config.json'
 import projectData from "../projects.json"
@@ -188,7 +188,16 @@ const addResource: ICommand = {
 
     execute: async (interaction: BaseCommandInteraction) => {
         const fs = require("fs")
+
+        let guild: any = interaction.client.guilds.cache.get(config.guildId)
+        const member = await guild.members.fetch(interaction.user.id)
+        const hasRole = member.roles.cache.some((role: any) => role.name === "officer")
         
+        if (!hasRole) {
+            await interaction.reply("Only officers can add resources.")
+            return
+        }
+
         var keys = Object.keys(projectData)
         var projectName = interaction.options.get("project-name")?.value as string
         var resourceTitle = interaction.options.get("resource-title")?.value as string
