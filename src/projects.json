@@ -1,0 +1,44 @@
+{
+    "Albot": {
+        "title": "ALBot-2.0",
+        "description": "Alpha version of ALBot 2.0, the spiritual successor to ALBot\n<:octocat:830153162735747152> [Github Link](https://github.com/ufosc/ALBot-2.0)\n:star: 4",
+        "fields": [
+            {
+                "name": "Language",
+                "value": "TypeScript",
+                "inline": true
+            },
+            {
+                "name": "Roles",
+                "value": "bot-dev",
+                "inline": true
+            },
+            {
+                "name": "Resources",
+                "value": "[Intro to TypeScript](https://youtu.be/gp5H0Vw39yw)\n[Discord.js Documentation](https://discord.js.org/#/)\n[Discord.js Guide](https://discordjs.guide/#before-you-begin)",
+                "inline": false
+            }
+        ]
+    },
+    "Documiner": {
+        "title": "DocuMiner",
+        "description": "A production-ready pipeline for text mining and subject indexing\n<:octocat:830153162735747152> [Github Repo](https://github.com/ufosc/DocuMiner)\n:star: 11",
+        "fields": [
+            {
+                "name": "Language",
+                "value": "Python",
+                "inline": true
+            },
+            {
+                "name": "Roles",
+                "value": "documiner",
+                "inline": true
+            },
+            {
+                "name": "Resources",
+                "value": "None",
+                "inline": false
+            }
+        ]
+    }
+}
