@@ -28,6 +28,17 @@ const helloWorld: ICommand = {
 
 }
 
+const helloWorldLanguages: ICommand = {
+    name: "helloworld_list",
+    description: "List of Hello World Languages",
+    
+    execute: async (interaction: BaseCommandInteraction) => {
+        const keys = Object.keys(helloWorldData)
+        const languages = keys.join("\n")
+        await interaction.reply("```\n"+languages+"\n```")
+    }
+}
+
 export function getCommands(): ICommand[] {
-    return [helloWorld];
+    return [helloWorld, helloWorldLanguages];
 }
