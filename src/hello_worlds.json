@@ -1,0 +1,8 @@
+{
+    "python": "print(\"Hello World\")",
+    "java": "public class HelloWorld {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println(\"Hello, world!\");\n\t}\n}",
+    "c++": "#include <iostream>\n\nint main() {\n\tstd::cout << \"Hello World\" << std::endl;\n}",
+    "javascript": "console.log(\"Hello World\")",
+    "typescript": "console.log(\"Hello World\")",
+    "go": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello World\")\n}"
+}

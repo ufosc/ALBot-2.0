@@ -1,5 +1,6 @@
 import { BaseCommandInteraction, Constants} from "discord.js";
 import { ICommand } from "../icommand";
+import helloWorldData from "../hello_worlds.json"
 
 const helloWorld: ICommand = {
     name: "helloworld",
@@ -14,7 +15,15 @@ const helloWorld: ICommand = {
     ],
 
     execute: async (interaction: BaseCommandInteraction) => {
-        await interaction.reply(interaction.options.get("language")?.value as string)
+        const language = interaction.options.get("language")?.value as string
+        const key = language as keyof typeof helloWorldData
+        
+        if (helloWorldData[key] === undefined) {
+            await interaction.reply("Language not available")
+            return
+        }
+
+        await interaction.reply("```"+language+"\n"+helloWorldData[key]+"\n```")
     }
 
 }
