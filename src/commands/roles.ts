@@ -39,7 +39,7 @@ const GiveRole: ICommand = {
         let guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
-        if((roles.has(name as string) && permitted.has(name as string)) || (member.permissions.has('MANAGE_ROLES') && roles.has(name as string)) )
+        if((roles.has(name as string) && permitted.has(name as string)) || (member.permissions.has('ADMINISTRATOR') && roles.has(name as string)) )
 	    {
             const role = await guild.roles.cache.find((r: any) => r.name === (name as string))
             member.roles.add(role)
@@ -70,9 +70,11 @@ const OpenRole: ICommand = {
         let name = interaction.options.get("role")?.value;
         let guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
-        if((member.permissions.has('MANAGE_ROLES') && roles.has(name as string)))
+        if((member.permissions.has('ADMINISTRATOR') && roles.has(name as string)))
 	    {            
-            if((name as string) !== "officer")
+            const role = await guild.roles.cache.find((r: any) => r.name === (name as string))
+
+            if(!role.permissions.has('ADMINISTRATOR'))
            {
                 permitted.add((name as string))
                 await interaction.reply(`role permissions saved successfully!`);
@@ -109,7 +111,7 @@ const CloseRole: ICommand = {
         let guild: any = interaction.client.guilds.cache.get(config.guildId)
         const member = await guild.members.fetch(interaction.user.id)
 
-        if((member.permissions.has('MANAGE_ROLES') && roles.has(name as string)))
+        if((member.permissions.has('ADMINISTRATOR') && roles.has(name as string)))
 	    {             
  
             if(permitted.has(name as string))
