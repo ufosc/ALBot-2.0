@@ -15,7 +15,7 @@ const helloWorld: ICommand = {
     ],
 
     execute: async (interaction: BaseCommandInteraction) => {
-        const language = interaction.options.get("language")?.value as string
+        const language = (interaction.options.get("language")?.value as string).toLowerCase()
         const key = language as keyof typeof helloWorldData
         
         if (helloWorldData[key] === undefined) {
@@ -29,7 +29,7 @@ const helloWorld: ICommand = {
 }
 
 const helloWorldLanguages: ICommand = {
-    name: "helloworld_list",
+    name: "helloworld-list",
     description: "List of Hello World Languages",
     
     execute: async (interaction: BaseCommandInteraction) => {
