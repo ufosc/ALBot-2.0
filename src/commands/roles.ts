@@ -77,18 +77,18 @@ const OpenRole: ICommand = {
             if(!role.permissions.has('ADMINISTRATOR'))
            {
                 permitted.add((name as string))
-                await interaction.reply(`role permissions saved successfully!`);
+                await interaction.reply(`Role permissions saved successfully!`);
            }
            else
            {
-            await interaction.reply(`Officer channel access blocked`);
+            await interaction.reply(`Cannot open role with administrator privileges`);
 
            }
 
         }
         else 
         {
-            await interaction.reply(`You are not an officer or something else went wrong`);
+            await interaction.reply(`You are not an admin or something else went wrong`);
 
         }
     }
@@ -126,7 +126,7 @@ const CloseRole: ICommand = {
         }
         else 
         {
-            await interaction.reply(`You are not an officer or something else went wrong`);
+            await interaction.reply(`You are not an admin or something else went wrong`);
 
         }
     }
