@@ -26,7 +26,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: echo ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }} > config.json
+    - name: Generate config.json
+      run: 
+        echo $CONFIG_DOT_JSON >> ./config.json
+      shell: bash
+      env: 
+        CONFIG_DOT_JSON : ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }}
     - run: npm install
     - run: npm run deploy-commands
     - run: npm run start
