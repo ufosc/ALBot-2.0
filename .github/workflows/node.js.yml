@@ -6,19 +6,17 @@ name: Node.js CI
 on:
   push:
     branches: [ main, ciCD ]
-  pull_request:
-    branches: [ main, ciCD ]
 
 jobs:
   build:
     environment: ALBOT_PROD
     runs-on: ubuntu-latest
-
+    
     strategy:
       matrix:
         node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+    
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -27,11 +25,40 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: Generate config.json
-      run: 
-        echo $CONFIG_DOT_JSON >> ./config.json
+      run:
+          echo $CONFIG_DOT_JSON >> ./config.json
       shell: bash
-      env: 
-        CONFIG_DOT_JSON : ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }}
+      env:
+        CONFIG_DOT_JSON: ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }}
     - run: npm install
     - run: npm run deploy-commands
-    - run: npm run start
+
+  deploy:
+    needs: build
+    environment: ALBOT_PROD
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to Digital Ocean droplet via SSH action
+      uses: appleboy/ssh-action@v0.1.3
+      with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          envs: ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }}
+          script: |
+            # Pull the repo
+            git pull
+            # Checkout onto main, if not already
+            git checkout ciCD
+            # Generate config.json
+            echo ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }} >> ./config.json
+            # Stop running container
+            docker stop albot_prod
+            # Remove old container
+            docker rm albot_prod
+            # Build container fresh
+            docker build . -t gh-actions/albot
+            # Run the container
+            docker run -d --name albot_prod gh-actions/albot
