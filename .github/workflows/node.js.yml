@@ -51,7 +51,7 @@ jobs:
             # Change into the directory
             cd ~/ALBot-2.0
             # Pull the repo
-            # git pull
+            git pull
             # Checkout onto main, if not already
             git checkout ciCD
             # Generate config.json
