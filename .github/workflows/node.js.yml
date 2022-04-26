@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-
+    environment: ALBOT_PROD
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,7 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: echo ${{ secrets.ALBOT_PROD.ALBOT_PRODUCTION_CONFIG_DOT_JSON }} > config.json
+    - run: echo ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }} > config.json
     - run: npm install
     - run: npm run deploy-commands
     - run: npm run start
