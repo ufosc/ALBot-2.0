@@ -59,8 +59,8 @@ jobs:
             # Stop running container
             echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker stop albot_prod
             # Remove old container
-            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S sudo docker rm albot_prod
+            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker rm albot_prod
             # Build container fresh
-            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S sudo docker build . -t gh-actions/albot
+            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker build . -t gh-actions/albot
             # Run the container
-            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S sudo docker run -d --name albot_prod gh-actions/albot
+            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker run -d --name albot_prod gh-actions/albot
