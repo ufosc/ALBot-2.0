@@ -57,10 +57,10 @@ jobs:
             # Generate config.json
             echo ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }} >> ./config.json
             # Stop running container
-            docker stop albot_prod
+            sudo docker stop albot_prod
             # Remove old container
-            docker rm albot_prod
+            sudo docker rm albot_prod
             # Build container fresh
-            docker build . -t gh-actions/albot
+            sudo docker build . -t gh-actions/albot
             # Run the container
-            docker run -d --name albot_prod gh-actions/albot
+            sudo docker run -d --name albot_prod gh-actions/albot
