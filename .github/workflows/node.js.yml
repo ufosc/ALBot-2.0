@@ -48,6 +48,8 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           envs: ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }}
           script: |
+            # Change into the directory
+            cd ~/ALBot-2.0
             # Pull the repo
             git pull
             # Checkout onto main, if not already
