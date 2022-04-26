@@ -57,9 +57,9 @@ jobs:
             # Generate config.json
             echo ${{ secrets.ALBOT_PRODUCTION_CONFIG_DOT_JSON }} >> ./config.json
             # Stop running container
-            # echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker stop albot_prod
+            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker stop albot_prod
             # Remove old container
-            # echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker rm albot_prod
+            echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker rm albot_prod
             # Build container fresh
             echo ${{ secrets.SSH_PASSPHRASE }} | sudo -S docker build . -t gh-actions/albot
             # Run the container
